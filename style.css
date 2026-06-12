@@ -273,3 +273,58 @@ input:focus {
   .output-row { flex-direction: column; }
   .hash-display { width: 100%; }
 }
+
+/* ── Tabs ── */
+
+.tabs {
+  display: flex;
+  gap: 0;
+  margin-bottom: 1.8rem;
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 4px;
+}
+
+.tab {
+  flex: 1;
+  background: transparent;
+  border: none;
+  border-radius: 7px;
+  color: var(--muted);
+  cursor: pointer;
+  font-size: 0.75rem;
+  font-family: inherit;
+  font-weight: 600;
+  padding: 0.5rem 0;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  transition: background 0.18s, color 0.18s;
+}
+
+.tab:hover {
+  color: var(--text);
+}
+
+.tab.active {
+  background: var(--border);
+  color: var(--accent);
+}
+
+/* ── Panels ── */
+
+.panel.hidden {
+  display: none;
+}
+
+/* ── Code output (larger digits) ── */
+
+.code-display {
+  font-size: 2rem;
+  letter-spacing: 0.35em;
+}
+
+.code-display.empty {
+  font-size: 0.85rem;
+  letter-spacing: 0.05em;
+}

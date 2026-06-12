@@ -8,46 +8,96 @@
   </head>
   <body>
     <div class="card">
+
       <div class="header">
-        <h1>Password Generator</h1>
-        <p>Combines three strings into an 8-character hash</p>
+        <h1 id="mainTitle">Password Generator</h1>
+        <p id="mainSubtitle">Combines three strings into an 8-character hash</p>
       </div>
 
-      <div class="fields">
-        <div class="field">
-          <label for="s1">String 1</label>
-          <input type="text" id="s1" placeholder="Enter first string…" autocomplete="off" spellcheck="false" />
+      <!-- ── Tabs ── -->
+      <div class="tabs">
+        <button class="tab active" data-tab="password">Password</button>
+        <button class="tab" data-tab="code">Code</button>
+      </div>
+
+      <!-- ── Password panel ── -->
+      <div class="panel" id="panel-password">
+        <div class="fields">
+          <div class="field">
+            <label for="s1">String 1</label>
+            <input type="text" id="s1" placeholder="Enter first string…" autocomplete="off" spellcheck="false" />
+          </div>
+          <div class="field">
+            <label for="s2">String 2</label>
+            <input type="text" id="s2" placeholder="Enter second string…" autocomplete="off" spellcheck="false" />
+          </div>
+          <div class="field">
+            <label for="s3">String 3</label>
+            <input type="text" id="s3" placeholder="Enter third string…" autocomplete="off" spellcheck="false" />
+          </div>
         </div>
-        <div class="field">
-          <label for="s2">String 2</label>
-          <input type="text" id="s2" placeholder="Enter second string…" autocomplete="off" spellcheck="false" />
+
+        <hr class="divider" />
+
+        <div class="visibility-row">
+          <span class="vis-label" id="visLabel">Hide</span>
+          <label class="switch">
+            <input type="checkbox" id="toggleCheck" />
+            <span class="slider"></span>
+          </label>
+          <span class="vis-label">Show</span>
         </div>
-        <div class="field">
-          <label for="s3">String 3</label>
-          <input type="text" id="s3" placeholder="Enter third string…" autocomplete="off" spellcheck="false" />
+
+        <div class="output-label">Combined Hash</div>
+        <div class="output-row">
+          <div class="hash-display empty" id="hashOut">——————————</div>
+          <button class="copy-btn" id="copyBtn" title="Copy to clipboard">Copy</button>
         </div>
+
+        <p class="info">
+          Charset: <code>0-9 a-z A-Z !@$#&</code> · Length: <code>8 chars</code>
+        </p>
       </div>
 
-      <hr class="divider" />
+      <!-- ── Code panel ── -->
+      <div class="panel hidden" id="panel-code">
+        <div class="fields">
+          <div class="field">
+            <label for="c1">String 1</label>
+            <input type="text" id="c1" placeholder="Enter first string…" autocomplete="off" spellcheck="false" />
+          </div>
+          <div class="field">
+            <label for="c2">String 2</label>
+            <input type="text" id="c2" placeholder="Enter second string…" autocomplete="off" spellcheck="false" />
+          </div>
+          <div class="field">
+            <label for="c3">String 3</label>
+            <input type="text" id="c3" placeholder="Enter third string…" autocomplete="off" spellcheck="false" />
+          </div>
+        </div>
 
-      <div class="visibility-row">
-        <span class="vis-label" id="visLabel">Hide</span>
-        <label class="switch">
-          <input type="checkbox" id="toggleCheck" />
-          <span class="slider"></span>
-        </label>
-        <span class="vis-label" id="visLabel2">Show</span>
+        <hr class="divider" />
+
+        <div class="visibility-row">
+          <span class="vis-label">Hide</span>
+          <label class="switch">
+            <input type="checkbox" id="codeToggleCheck" />
+            <span class="slider"></span>
+          </label>
+          <span class="vis-label">Show</span>
+        </div>
+
+        <div class="output-label">4-Digit Code</div>
+        <div class="output-row">
+          <div class="hash-display code-display empty" id="codeOut">————</div>
+          <button class="copy-btn" id="codeCopyBtn" title="Copy to clipboard">Copy</button>
+        </div>
+
+        <p class="info">
+          Digits only: <code>0–9</code> · Length: <code>4 digits</code>
+        </p>
       </div>
 
-      <div class="output-label">Combined Hash</div>
-      <div class="output-row">
-        <div class="hash-display empty" id="hashOut">——————————</div>
-        <button class="copy-btn" id="copyBtn" title="Copy to clipboard">Copy</button>
-      </div>
-
-      <p class="info">
-        Charset: <code>0-9 a-z A-Z !@$#&()</code> · Length: <code>8 chars</code>
-      </p>
     </div>
 
     <script src="script.js"></script>

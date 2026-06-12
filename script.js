@@ -1,3 +1,7 @@
+/* ─────────────────────────────────────────────────────────────────────────────
+   Shared hash utilities
+───────────────────────────────────────────────────────────────────────────── */
+
 const GROUPS = {
   lower:   'abcdefghijkmnopqrstuvwxyz',
   upper:   'ABCDEFGHJKLMNPQRSTUVWXYZ',
@@ -5,7 +9,6 @@ const GROUPS = {
   special: '!@$#&',
 };
 const CHARSET = GROUPS.lower + GROUPS.upper + GROUPS.digit + GROUPS.special;
-const CHARSET = GROUPS.digit;
 
 function hash32(str, seed = 0) {
   let h = seed >>> 0;
@@ -33,6 +36,10 @@ function deterministicShuffle(arr, seed) {
   return a;
 }
 
+/* ─────────────────────────────────────────────────────────────────────────────
+   Password tab — 8-char hash
+───────────────────────────────────────────────────────────────────────────── */
+
 function combineHash(a, b, c) {
   const h1 = hash32(a, 0x1a2b3c4d);
   const h2 = hash32(b, 0x5e6f7081);
@@ -57,54 +64,140 @@ function combineHash(a, b, c) {
   return deterministicShuffle([...guaranteed, ...free], h1 ^ h2 ^ h3).join('');
 }
 
-// ── DOM ───────────────────────────────────────────────────────────────────────
+/* ─────────────────────────────────────────────────────────────────────────────
+   Code tab — 4-digit numeric code
+───────────────────────────────────────────────────────────────────────────── */
 
+function combineCode(a, b, c) {
+  const h1 = hash32(a, 0xdeadbeef);
+  const h2 = hash32(b, 0xcafebabe);
+  const h3 = hash32(c, 0xf00dbabe);
+
+  // Four independent hashes, each gives one digit 0–9
+  const d0 = hash32(a + '\0' + b + '\0' + c, h1 ^ h2 ^ h3) % 10;
+  const d1 = hash32(b + '\0' + c + '\0' + a, h2 ^ h3)       % 10;
+  const d2 = hash32(c + '\0' + a + '\0' + b, h1 ^ h3)       % 10;
+  const d3 = hash32(a + b + c + a,           h1 ^ h2)        % 10;
+
+  return `${d0}${d1}${d2}${d3}`;
+}
+
+/* ─────────────────────────────────────────────────────────────────────────────
+   DOM refs
+───────────────────────────────────────────────────────────────────────────── */
+
+// Tabs
+const tabs      = document.querySelectorAll('.tab');
+const panels    = document.querySelectorAll('.panel');
+const mainTitle = document.getElementById('mainTitle');
+const mainSub   = document.getElementById('mainSubtitle');
+
+// Password panel
 const s1          = document.getElementById('s1');
 const s2          = document.getElementById('s2');
 const s3          = document.getElementById('s3');
-const out         = document.getElementById('hashOut');
+const hashOut     = document.getElementById('hashOut');
 const copyBtn     = document.getElementById('copyBtn');
 const toggleCheck = document.getElementById('toggleCheck');
 
-// ── Update ────────────────────────────────────────────────────────────────────
+// Code panel
+const c1              = document.getElementById('c1');
+const c2              = document.getElementById('c2');
+const c3              = document.getElementById('c3');
+const codeOut         = document.getElementById('codeOut');
+const codeCopyBtn     = document.getElementById('codeCopyBtn');
+const codeToggleCheck = document.getElementById('codeToggleCheck');
 
-function update() {
-  const a = s1.value, b = s2.value, c = s3.value;
-  if (!a && !b && !c) {
-    out.textContent = '——————————';
-    out.classList.add('empty');
-    out.classList.remove('blurred');
-    return;
-  }
-  out.classList.remove('empty');
-  out.textContent = combineHash(a, b, c);
-  // Respect current toggle state
-  out.classList.toggle('blurred', !toggleCheck.checked);
-}
+/* ─────────────────────────────────────────────────────────────────────────────
+   Tab switching
+───────────────────────────────────────────────────────────────────────────── */
 
-[s1, s2, s3].forEach(el => el.addEventListener('input', update));
+const META = {
+  password: { title: 'Password Generator', sub: 'Combines three strings into an 8-character hash' },
+  code:     { title: 'Code Generator',     sub: 'Combines three strings into a 4-digit code'      },
+};
 
-// ── Init: start hidden ────────────────────────────────────────────────────────
+tabs.forEach(tab => {
+  tab.addEventListener('click', () => {
+    const target = tab.dataset.tab;
 
-toggleCheck.checked = false;
+    tabs.forEach(t => t.classList.toggle('active', t === tab));
+    panels.forEach(p => p.classList.toggle('hidden', p.id !== `panel-${target}`));
 
-// ── Toggle ────────────────────────────────────────────────────────────────────
-
-toggleCheck.addEventListener('change', () => {
-  if (out.classList.contains('empty')) return;
-  out.classList.toggle('blurred', !toggleCheck.checked);
-});
-
-// ── Copy ──────────────────────────────────────────────────────────────────────
-
-copyBtn.addEventListener('click', () => {
-  if (!out.textContent || out.classList.contains('empty')) return;
-  navigator.clipboard.writeText(out.textContent).then(() => {
-    copyBtn.textContent = 'Copied!';
-    copyBtn.classList.add('copied');
-    setTimeout(() => {
-      copyBtn.textContent = 'Copy';
-      copyBtn.classList.remove('copied');
-    }, 1500);
+    mainTitle.textContent = META[target].title;
+    mainSub.textContent   = META[target].sub;
   });
 });
+
+/* ─────────────────────────────────────────────────────────────────────────────
+   Password panel logic
+───────────────────────────────────────────────────────────────────────────── */
+
+function updatePassword() {
+  const a = s1.value, b = s2.value, c = s3.value;
+  if (!a && !b && !c) {
+    hashOut.textContent = '——————————';
+    hashOut.classList.add('empty');
+    hashOut.classList.remove('blurred');
+    return;
+  }
+  hashOut.classList.remove('empty');
+  hashOut.textContent = combineHash(a, b, c);
+  hashOut.classList.toggle('blurred', !toggleCheck.checked);
+}
+
+[s1, s2, s3].forEach(el => el.addEventListener('input', updatePassword));
+
+toggleCheck.addEventListener('change', () => {
+  if (hashOut.classList.contains('empty')) return;
+  hashOut.classList.toggle('blurred', !toggleCheck.checked);
+});
+
+copyBtn.addEventListener('click', () => {
+  if (hashOut.classList.contains('empty')) return;
+  navigator.clipboard.writeText(hashOut.textContent).then(() => {
+    copyBtn.textContent = 'Copied!';
+    copyBtn.classList.add('copied');
+    setTimeout(() => { copyBtn.textContent = 'Copy'; copyBtn.classList.remove('copied'); }, 1500);
+  });
+});
+
+/* ─────────────────────────────────────────────────────────────────────────────
+   Code panel logic
+───────────────────────────────────────────────────────────────────────────── */
+
+function updateCode() {
+  const a = c1.value, b = c2.value, c = c3.value;
+  if (!a && !b && !c) {
+    codeOut.textContent = '————';
+    codeOut.classList.add('empty');
+    codeOut.classList.remove('blurred');
+    return;
+  }
+  codeOut.classList.remove('empty');
+  codeOut.textContent = combineCode(a, b, c);
+  codeOut.classList.toggle('blurred', !codeToggleCheck.checked);
+}
+
+[c1, c2, c3].forEach(el => el.addEventListener('input', updateCode));
+
+codeToggleCheck.addEventListener('change', () => {
+  if (codeOut.classList.contains('empty')) return;
+  codeOut.classList.toggle('blurred', !codeToggleCheck.checked);
+});
+
+codeCopyBtn.addEventListener('click', () => {
+  if (codeOut.classList.contains('empty')) return;
+  navigator.clipboard.writeText(codeOut.textContent).then(() => {
+    codeCopyBtn.textContent = 'Copied!';
+    codeCopyBtn.classList.add('copied');
+    setTimeout(() => { codeCopyBtn.textContent = 'Copy'; codeCopyBtn.classList.remove('copied'); }, 1500);
+  });
+});
+
+/* ─────────────────────────────────────────────────────────────────────────────
+   Init — both outputs start hidden
+───────────────────────────────────────────────────────────────────────────── */
+
+toggleCheck.checked     = false;
+codeToggleCheck.checked = false;
