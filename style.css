@@ -4,8 +4,8 @@
   --bg:        #0d0f14;
   --surface:   #151820;
   --border:    #252a36;
-  --accent:    #7c6af7;
-  --accent2:   #4af0c8;
+  --purple:    #4af0c8bb;
+  --accent:   #4af0c8;
   --dim:       #006f6f;
   --text:      #e4e6f0;
   --muted:     #5a607a;
@@ -42,7 +42,7 @@ body {
   font-size: 1.25rem;
   font-weight: 700;
   letter-spacing: 0.08em;
-  color: var(--accent2);
+  color: var(--accent);
   text-transform: uppercase;
 }
 
@@ -122,7 +122,7 @@ input:focus {
   font-size: 1.35rem;
   font-weight: 700;
   letter-spacing: 0.18em;
-  color: var(--accent2);
+  color: var(--accent);
   min-height: 2.8rem;
   display: flex;
   align-items: center;
@@ -152,8 +152,8 @@ input:focus {
   flex-shrink: 0;
 }
 
-.copy-btn:hover { background: var(--accent); color: #fff; }
-.copy-btn.copied { background: var(--accent2); color: var(--bg); }
+.copy-btn:hover { background: var(--purple); color: #fff; }
+.copy-btn.copied { background: var(--accent); color: var(--bg); }
 
 .info {
   margin-top: 1.2rem;
@@ -168,5 +168,5 @@ input:focus {
   padding: 0.1em 0.35em;
   border-radius: 3px;
   font-size: 0.68rem;
-  color: var(--accent2);
+  color: var(--accent);
 }
