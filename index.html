@@ -1,47 +1,55 @@
 <!DOCTYPE html>
 <html lang="en">
-    <head>
-        <meta charset="UTF-8" />
-        <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-        <title>Password Generator</title>
-        <link rel="stylesheet" href="style.css">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Password Generator</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <div class="card">
+      <div class="header">
+        <h1>Password Generator</h1>
+        <p>Combines three strings into an 8-character hash</p>
+      </div>
 
-    </head>
-    <body>
-        <div class="card">
-        <div class="header">
-            <h1>Password Generator</h1>
-            <p>Combines three strings into an 8-character hash</p>
+      <div class="fields">
+        <div class="field">
+          <label for="s1">String 1</label>
+          <input type="text" id="s1" placeholder="Enter first string…" autocomplete="off" spellcheck="false" />
         </div>
-
-        <div class="fields">
-            <div class="field">
-            <label for="s1">String 1</label>
-            <input type="text" id="s1" placeholder="Enter first string…" autocomplete="off" spellcheck="false" />
-            </div>
-            <div class="field">
-            <label for="s2">String 2</label>
-            <input type="text" id="s2" placeholder="Enter second string…" autocomplete="off" spellcheck="false" />
-            </div>
-            <div class="field">
-            <label for="s3">String 3</label>
-            <input type="text" id="s3" placeholder="Enter third string…" autocomplete="off" spellcheck="false" />
-            </div>
+        <div class="field">
+          <label for="s2">String 2</label>
+          <input type="text" id="s2" placeholder="Enter second string…" autocomplete="off" spellcheck="false" />
         </div>
-
-        <hr class="divider" />
-
-        <div class="output-label">Combined Hash</div>
-        <div class="output-row">
-            <div class="hash-display empty" id="hashOut">——————————</div>
-            <button class="copy-btn" id="copyBtn" title="Copy to clipboard">Copy</button>
+        <div class="field">
+          <label for="s3">String 3</label>
+          <input type="text" id="s3" placeholder="Enter third string…" autocomplete="off" spellcheck="false" />
         </div>
+      </div>
 
-        <p class="info">
-            Charset: <code>0-9 a-z A-Z !@$#&()</code> · Length: <code>8 chars</code>
-        </p>
-        </div>
-        <script src="script.js"></script>
+      <hr class="divider" />
 
-    </body>
+      <div class="visibility-row">
+        <span class="vis-label" id="visLabel">Hide</span>
+        <label class="switch">
+          <input type="checkbox" id="toggleCheck" />
+          <span class="slider"></span>
+        </label>
+        <span class="vis-label" id="visLabel2">Show</span>
+      </div>
+
+      <div class="output-label">Combined Hash</div>
+      <div class="output-row">
+        <div class="hash-display empty" id="hashOut">——————————</div>
+        <button class="copy-btn" id="copyBtn" title="Copy to clipboard">Copy</button>
+      </div>
+
+      <p class="info">
+        Charset: <code>0-9 a-z A-Z !@$#&()</code> · Length: <code>8 chars</code>
+      </p>
+    </div>
+
+    <script src="script.js"></script>
+  </body>
 </html>
