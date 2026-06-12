@@ -127,6 +127,7 @@ input:focus {
   display: flex;
   align-items: center;
   transition: color 0.2s;
+  cursor: default;
 }
 
 .hash-display.empty {
@@ -169,4 +170,13 @@ input:focus {
   border-radius: 3px;
   font-size: 0.68rem;
   color: var(--accent);
+}
+
+@media (max-width: 480px) {
+  .hash-display {
+    width: 100%;
+  }
+  .output-row {
+    flex-direction: column;
+  }
 }
