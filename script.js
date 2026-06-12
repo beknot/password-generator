@@ -1,8 +1,8 @@
 const GROUPS = {
-    lower:   'abcdefghijklmnopqrstuvwxyz',
-    upper:   'ABCDEFGHIJKLMNOPQRSTUVWXYZ',
-    digit:   '0123456789',
-    special: '!@#&()',
+    lower:   'abcdefghijkmnopqrstuvwxyz',
+    upper:   'ABCDEFGHJKLMNPQRSTUVWXYZ',
+    digit:   '123456789',
+    special: '!@$#&()',
 };
 const CHARSET = GROUPS.lower + GROUPS.upper + GROUPS.digit + GROUPS.special;
 const OUT_LEN  = 8;
